@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCommerce - Payment</title>
+    <link rel="stylesheet" href="css/payment.css">
+</head>
+<body>
+    <div class="payment-container">
+        <h2>Your Payment Details</h2>
+        <div id="cart-items-container">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div id="total-container">
+            <h3>Total Amount: ₹<span id="total-amount">0</span></h3>
+        </div>
+        <button onclick="confirmPayment()">Confirm Payment</button>
+        <button onclick="window.location.href='cart.html'">Go Back to Cart</button>
+    </div>
+
+    <script>
+        function displayCartItems() {
+            const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+            const container = document.getElementById("cart-items-container");
+            const totalAmount = document.getElementById("total-amount");
+            container.innerHTML = ""; // Clear previous items
+            let total = 0; // Initialize total amount
+
+            if (cartItems.length === 0) {
+                container.innerHTML = "<p>Your cart is empty.</p>";
+            } else {
+                cartItems.forEach((item, index) => {
+                    const itemDiv = document.createElement("div");
+                    itemDiv.className = "cart-item";
+                    itemDiv.innerHTML = `
+                        <h4>${item.name}</h4>
+                        <p>Price: ₹${item.price}</p>
+                        <button onclick="removeFromCart(${index})">Remove</button>
+                    `;
+                    container.appendChild(itemDiv);
+                    total += item.price; // Add item price to total
+                });
+            }
+
+            totalAmount.innerText = total; // Update total amount displayed
+        }
+
+        function removeFromCart(index) {
+            const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+            cartItems.splice(index, 1); // Remove item at the specified index
+            localStorage.setItem("cart", JSON.stringify(cartItems)); // Update local storage
+            displayCartItems(); // Refresh the cart display
+        }
+
+        function confirmPayment() {
+            alert("Payment has been confirmed! Thank you for your purchase.");
+            localStorage.removeItem("cart"); // Clear the cart after payment
+            window.location.href = "thank_you.html"; // Redirect to a thank you page or homepage
+        }
+
+        // Display cart items when the page loads
+        window.onload = displayCartItems;
+    </script>
+</body>
+</html>

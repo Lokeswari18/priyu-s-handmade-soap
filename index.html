@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eCommerce - Login</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form action="javascript:void(0);" method="post" id="loginForm">
+            <input type="text" id="username" name="username" placeholder="Username" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>New user? <a href="register.html">Register here</a></p>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').onsubmit = function(e) {
+            e.preventDefault(); // Prevent normal form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Predefined usernames and passwords
+            const validCredentials = {
+                "priya": "priya@123",
+                "loki": "loki@123",
+                "tamil": "tamil@123"
+            };
+
+            // Check if the username exists and if the password is correct
+            if (validCredentials[username] && validCredentials[username] === password) {
+                // Redirect to user dashboard if the login is successful
+                // Store username in local storage for access in dashboard
+                localStorage.setItem('username', username);
+                window.location.href = 'user_dashboard.html'; // Redirect to user dashboard
+            } else {
+                alert("Invalid username or password. Please register if you don't have an account.");
+            }
+        };
+    </script>
+</body>
+</html>
